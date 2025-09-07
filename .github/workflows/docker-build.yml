@@ -1,0 +1,24 @@
+name: Build Docker Image and Save as Artifact
+
+on:
+  workflow_dispatch:  # permite rodar manualmente no GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t meu-app:latest .
+
+      - name: Save Docker image to TAR
+        run: docker save meu-app:latest -o meu-app.tar
+
+      - name: Upload image as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: meu-app.tar
